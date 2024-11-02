@@ -1,7 +1,8 @@
 package com.it.itlens.services.interfaces;
 
-import com.it.itlens.models.Team;
+import com.it.itlens.models.entities.Team;
 
 public interface ITeamService {
-    public Team createTeam(Team team);
+    Team createTeam(Team team);
+    Team getTeamById(Long id);
 }
