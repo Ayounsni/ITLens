@@ -2,6 +2,7 @@ package com.it.itlens.models.entities;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @Entity
@@ -15,8 +16,10 @@ public class Answer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
     private String text;
-    private Integer selectionCount;
+
+    private Integer selectionCount = 0;
 
     @ManyToOne
     private Question question;

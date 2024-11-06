@@ -2,6 +2,7 @@ package com.it.itlens.models.entities;
 
 import com.it.itlens.validation.annotations.Unique;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ public class Owner {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
     @Unique(entity = Owner.class, field = "name")
     private String name;
 

@@ -3,6 +3,7 @@ package com.it.itlens.models.entities;
 
 import com.it.itlens.models.enums.QuestionType;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -19,8 +20,10 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
     private String text;
-    private Integer answerCount;
+
+    private Integer answerCount = 0;
 
     @Enumerated(EnumType.STRING)
     private QuestionType questionType;
