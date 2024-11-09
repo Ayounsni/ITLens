@@ -2,6 +2,7 @@ package com.it.itlens.controllers;
 
 import com.it.itlens.models.dtos.Owner.CreateOwnerDTO;
 import com.it.itlens.models.dtos.Owner.ResponseOwnerDTO;
+import com.it.itlens.models.dtos.Owner.UpdateOwnerDTO;
 import com.it.itlens.models.entities.Owner;
 import com.it.itlens.services.implementation.OwnerService;
 import com.it.itlens.validation.annotations.Exists;
@@ -23,24 +24,31 @@ public class OwnerController {
 
     @PostMapping
     public ResponseEntity<ResponseOwnerDTO> createOwner(@Valid @RequestBody CreateOwnerDTO createOwnerDTO) {
-        ResponseOwnerDTO owner = ownerService.addOwner(createOwnerDTO);
+        ResponseOwnerDTO owner = ownerService.create(createOwnerDTO);
         return new ResponseEntity<>(owner, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ResponseOwnerDTO> getOwnerById(@Exists(entity = Owner.class , message = "Cet owner n'existe pas.")  @PathVariable("id") Long id) {
-            ResponseOwnerDTO owner = ownerService.getOwnerById(id);
+            ResponseOwnerDTO owner = ownerService.findById(id);
             return new ResponseEntity<>(owner, HttpStatus.OK);
     }
     @GetMapping
     public ResponseEntity<List<ResponseOwnerDTO>> getAllOwners() {
-        List<ResponseOwnerDTO> owners = ownerService.getAllOwners();
+        List<ResponseOwnerDTO> owners = ownerService.findAll();
         return new ResponseEntity<>(owners, HttpStatus.OK);
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteTeam(@Exists(entity = Owner.class , message = "Cet owner n'existe pas.") @PathVariable("id") Long id) {
-            ownerService.deleteOwnerById(id);
+    public ResponseEntity<String> deleteOwner(@Exists(entity = Owner.class , message = "Cet owner n'existe pas.") @PathVariable("id") Long id) {
+            ownerService.deleteById(id);
             return new ResponseEntity<>("Owner est supprimé avec succès", HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ResponseOwnerDTO> updateOwner(@Exists(entity = Owner.class , message = "Cet owner n'existe pas.") @PathVariable("id") Long id, @Valid @RequestBody UpdateOwnerDTO updateOwnerDTO) {
+
+            ResponseOwnerDTO updatedOwner = ownerService.update(id, updateOwnerDTO);
+            return new ResponseEntity<>(updatedOwner, HttpStatus.OK);
     }
 
 

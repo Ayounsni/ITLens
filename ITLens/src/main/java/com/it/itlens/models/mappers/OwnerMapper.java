@@ -1,9 +1,11 @@
-package com.it.itlens.mappers;
+package com.it.itlens.models.mappers;
 
 import com.it.itlens.models.dtos.Owner.CreateOwnerDTO;
 import com.it.itlens.models.dtos.Owner.ResponseOwnerDTO;
+import com.it.itlens.models.dtos.Owner.UpdateOwnerDTO;
 import com.it.itlens.models.entities.Owner;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
 import java.util.List;
@@ -14,5 +16,7 @@ public interface OwnerMapper {
 
     ResponseOwnerDTO toDTO(Owner owner);
 
-    List<ResponseOwnerDTO> toDTOs(List<Owner> teams);
+    List<ResponseOwnerDTO> toDTOs(List<Owner> owners);
+
+    void updateOwnerFromDto(UpdateOwnerDTO updateOwnerDTO, @MappingTarget Owner owner);
 }

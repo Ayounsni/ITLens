@@ -2,9 +2,6 @@ package com.it.itlens.models.dtos.Survey;
 
 import com.it.itlens.models.dtos.Owner.EmbeddableOwnerDTO;
 import com.it.itlens.models.dtos.SurveyEdition.EmbeddableSurveyEditionDTO;
-import com.it.itlens.models.entities.Survey;
-import com.it.itlens.validation.annotations.Unique;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

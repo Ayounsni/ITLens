@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UpdateOwnerDTO {
-    @NotBlank
+
+    @Unique(entity = Owner.class, field = "name")
     private String name;
 }

@@ -1,45 +1,37 @@
 package com.it.itlens.services.implementation;
 
-import com.it.itlens.mappers.OwnerMapper;
+import com.it.itlens.models.mappers.OwnerMapper;
 import com.it.itlens.models.dtos.Owner.CreateOwnerDTO;
 import com.it.itlens.models.dtos.Owner.ResponseOwnerDTO;
 import com.it.itlens.models.dtos.Owner.UpdateOwnerDTO;
 import com.it.itlens.models.entities.Owner;
 import com.it.itlens.repository.OwnerRepository;
 import com.it.itlens.services.interfaces.IOwnerService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
-public class OwnerService implements IOwnerService {
-    @Autowired
-    private OwnerRepository ownerRepository;
+public class OwnerService extends GenericService<Owner,CreateOwnerDTO,UpdateOwnerDTO,ResponseOwnerDTO> implements IOwnerService {
 
-    @Autowired
-    private OwnerMapper ownerMapper;
+    private final OwnerMapper ownerMapper;
 
-    @Override
-    public ResponseOwnerDTO addOwner(CreateOwnerDTO createOwnerDTO) {
-        Owner owner = ownerMapper.toEntity(createOwnerDTO);
-        Owner savedOwner = ownerRepository.save(owner);
-        return ownerMapper.toDTO(savedOwner);
-    }
-    @Override
-    public ResponseOwnerDTO getOwnerById(Long id) {
-      Owner owner = ownerRepository.findById(id).orElse(null);
-      return ownerMapper.toDTO(owner);
-    }
-    @Override
-    public List<ResponseOwnerDTO> getAllOwners() {
-        List<Owner> owners = ownerRepository.findAll();
-        return ownerMapper.toDTOs(owners);
+    public OwnerService(OwnerRepository ownerRepository, OwnerMapper ownerMapper) {
+        super(ownerRepository);
+        this.ownerMapper = ownerMapper;
     }
 
     @Override
-    public void deleteOwnerById(Long id) {
-        ownerRepository.deleteById(id);
+    protected Owner toEntity(CreateOwnerDTO createOwnerDTO) {
+        return ownerMapper.toEntity(createOwnerDTO);
+    }
+
+    @Override
+    protected ResponseOwnerDTO toResponseDTO(Owner owner) {
+        return ownerMapper.toDTO(owner);
+    }
+
+    @Override
+    protected void updateEntityFromDTO(UpdateOwnerDTO updateOwnerDTO, Owner owner) {
+        ownerMapper.updateOwnerFromDto(updateOwnerDTO, owner);
     }
 
 
