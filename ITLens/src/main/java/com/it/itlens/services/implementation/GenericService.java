@@ -1,38 +1,38 @@
 package com.it.itlens.services.implementation;
 
+import com.it.itlens.models.mappers.GenericMapper;
 import com.it.itlens.services.interfaces.IGenericService;
 import org.springframework.data.jpa.repository.JpaRepository;
+
 import java.util.List;
 
 public abstract class GenericService<Entity, CreateDTO, UpdateDTO, ResponseDTO> implements IGenericService<CreateDTO, UpdateDTO, ResponseDTO> {
 
     protected final JpaRepository<Entity, Long> repository;
+    protected final GenericMapper<Entity, CreateDTO, UpdateDTO, ResponseDTO> mapper;
 
-    public GenericService(JpaRepository<Entity, Long> repository) {
+    public GenericService(JpaRepository<Entity, Long> repository, GenericMapper<Entity, CreateDTO,UpdateDTO, ResponseDTO> mapper) {
         this.repository = repository;
+        this.mapper = mapper;
     }
-
-    protected abstract Entity toEntity(CreateDTO createDTO);
-    protected abstract ResponseDTO toResponseDTO(Entity entity);
-    protected abstract void updateEntityFromDTO(UpdateDTO updateDTO, Entity entity);
 
     @Override
     public ResponseDTO create(CreateDTO createDTO) {
-        Entity entity = toEntity(createDTO);
+        Entity entity = mapper.toEntity(createDTO);
         Entity savedEntity = repository.save(entity);
-        return toResponseDTO(savedEntity);
+        return mapper.toDTO(savedEntity);
     }
 
     @Override
     public ResponseDTO findById(Long id) {
         Entity entity = repository.findById(id).orElseThrow();
-        return toResponseDTO(entity);
+        return mapper.toDTO(entity);
     }
 
     @Override
     public List<ResponseDTO> findAll() {
         List<Entity> entities = repository.findAll();
-        return entities.stream().map(this::toResponseDTO).toList();
+        return entities.stream().map(mapper::toDTO).toList();
     }
 
     @Override
@@ -43,8 +43,8 @@ public abstract class GenericService<Entity, CreateDTO, UpdateDTO, ResponseDTO> 
     @Override
     public ResponseDTO update(Long id, UpdateDTO updateDTO) {
         Entity entity = repository.findById(id).orElseThrow();
-        updateEntityFromDTO(updateDTO, entity);
-        Entity updatedEntity = repository.save(entity);
-        return toResponseDTO(updatedEntity);
+        Entity updatedEntity = mapper.updateEntityFromDTO(updateDTO, entity);
+        updatedEntity = repository.save(updatedEntity);
+        return mapper.toDTO(updatedEntity);
     }
 }

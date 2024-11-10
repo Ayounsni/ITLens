@@ -12,28 +12,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class OwnerService extends GenericService<Owner,CreateOwnerDTO,UpdateOwnerDTO,ResponseOwnerDTO> implements IOwnerService {
 
-    private final OwnerMapper ownerMapper;
-
     public OwnerService(OwnerRepository ownerRepository, OwnerMapper ownerMapper) {
-        super(ownerRepository);
-        this.ownerMapper = ownerMapper;
+        super(ownerRepository, ownerMapper);
     }
-
-    @Override
-    protected Owner toEntity(CreateOwnerDTO createOwnerDTO) {
-        return ownerMapper.toEntity(createOwnerDTO);
-    }
-
-    @Override
-    protected ResponseOwnerDTO toResponseDTO(Owner owner) {
-        return ownerMapper.toDTO(owner);
-    }
-
-    @Override
-    protected void updateEntityFromDTO(UpdateOwnerDTO updateOwnerDTO, Owner owner) {
-        ownerMapper.updateOwnerFromDto(updateOwnerDTO, owner);
-    }
-
-
 
 }

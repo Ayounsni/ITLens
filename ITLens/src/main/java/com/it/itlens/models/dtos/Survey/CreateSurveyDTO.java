@@ -1,6 +1,8 @@
 package com.it.itlens.models.dtos.Survey;
 
+import com.it.itlens.models.entities.Owner;
 import com.it.itlens.models.entities.Survey;
+import com.it.itlens.validation.annotations.Exists;
 import com.it.itlens.validation.annotations.Unique;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -20,5 +22,6 @@ public class CreateSurveyDTO {
     private String description;
 
     @NotNull
+    @Exists(entity = Owner.class, message = "Cet owner n'existe pas.")
     private Long ownerId ;
 }

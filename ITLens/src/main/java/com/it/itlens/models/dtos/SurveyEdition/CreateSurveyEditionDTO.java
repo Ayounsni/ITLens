@@ -1,6 +1,8 @@
 package com.it.itlens.models.dtos.SurveyEdition;
 
+import com.it.itlens.models.entities.Owner;
 import com.it.itlens.models.entities.Survey;
+import com.it.itlens.validation.annotations.Exists;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
@@ -28,5 +30,6 @@ public class CreateSurveyEditionDTO {
     private Integer year;
 
     @NotNull
+    @Exists(entity = Survey.class, message = "Cet survey n'existe pas.")
     private Long surveyId;
 }

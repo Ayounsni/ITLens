@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
 
 @Constraint(validatedBy = ExistsValidator.class)
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.PARAMETER})
+@Target({ElementType.PARAMETER, ElementType.FIELD})
 public @interface Exists {
     String message() default "L'entité n'existe pas.";
     Class<?>[] groups() default {};

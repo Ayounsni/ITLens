@@ -12,6 +12,6 @@ public class OwnerMapperHelper {
     private OwnerRepository ownerRepository;
 
     public Owner mapOwnerIdToOwner(Long ownerId) {
-        return ownerRepository.findById(ownerId).orElse(null); // Gérer le cas où l'ID n'existe pas
+        return ownerRepository.findById(ownerId).orElse(null);
     }
 }

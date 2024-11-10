@@ -11,12 +11,6 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 import java.util.List;
 
 @Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-public interface OwnerMapper {
-    Owner toEntity(CreateOwnerDTO createOwnerDTO);
+public interface OwnerMapper extends GenericMapper<Owner, CreateOwnerDTO, UpdateOwnerDTO,ResponseOwnerDTO> {
 
-    ResponseOwnerDTO toDTO(Owner owner);
-
-    List<ResponseOwnerDTO> toDTOs(List<Owner> owners);
-
-    void updateOwnerFromDto(UpdateOwnerDTO updateOwnerDTO, @MappingTarget Owner owner);
 }

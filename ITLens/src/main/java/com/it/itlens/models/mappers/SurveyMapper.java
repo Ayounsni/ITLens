@@ -10,20 +10,22 @@ import com.it.itlens.models.mappers.helpers.OwnerMapperHelper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {OwnerMapperHelper.class})
-public interface SurveyMapper {
-
+@Mapper(componentModel = "spring", uses = {OwnerMapperHelper.class}, nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+public interface SurveyMapper extends GenericMapper<Survey,CreateSurveyDTO, UpdateSurveyDTO,ResponseSurveyDTO> {
+    @Override
     @Mapping(target = "owner", source = "ownerId")
     Survey toEntity(CreateSurveyDTO createSurveyDTO);
 
+    @Override
+    @Mapping(target = "owner", source = "ownerId")
+    Survey updateEntityFromDTO(UpdateSurveyDTO updateDTO, @MappingTarget Survey entity);
+
+    @Override
     @Mapping(target = "owner", source = "owner")
     ResponseSurveyDTO toDTO(Survey survey);
 
-
-    List<ResponseSurveyDTO> toDTOs(List<Survey> surveys);
-
-    void updateSurveyFromDto(UpdateSurveyDTO updateSurveyDTO, @MappingTarget Survey survey);
 }
