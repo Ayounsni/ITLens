@@ -50,7 +50,7 @@ public class QuestionController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseQuestionDTO> updateSubject(@Exists(entity = Question.class , message = "Cet question n'existe pas.") @PathVariable("id") Long id, @Valid @RequestBody UpdateQuestionDTO updateQuestionDTO) {
+    public ResponseEntity<ResponseQuestionDTO> updateQuestion(@Exists(entity = Question.class , message = "Cet question n'existe pas.") @PathVariable("id") Long id, @Valid @RequestBody UpdateQuestionDTO updateQuestionDTO) {
 
             ResponseQuestionDTO updatedQuestion = questionService.update(id, updateQuestionDTO);
             return new ResponseEntity<>(updatedQuestion, HttpStatus.OK);
