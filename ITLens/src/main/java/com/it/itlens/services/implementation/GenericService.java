@@ -1,7 +1,11 @@
 package com.it.itlens.services.implementation;
 
+import com.it.itlens.models.dtos.Pagination.PageDTO;
 import com.it.itlens.models.mappers.GenericMapper;
 import com.it.itlens.services.interfaces.IGenericService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -30,9 +34,23 @@ public class GenericService<Entity, CreateDTO, UpdateDTO, ResponseDTO> implement
     }
 
     @Override
-    public List<ResponseDTO> findAll() {
-        List<Entity> entities = repository.findAll();
-        return entities.stream().map(mapper::toDTO).toList();
+    public PageDTO<ResponseDTO> findAll(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Entity> pagedResult = repository.findAll(pageable);
+
+        List<ResponseDTO> content = pagedResult.getContent()
+                .stream()
+                .map(mapper::toDTO)
+                .toList();
+
+        return new PageDTO<>(
+                content,
+                pagedResult.getNumber(),
+                pagedResult.getSize(),
+                pagedResult.getTotalElements(),
+                pagedResult.getTotalPages(),
+                pagedResult.isLast()
+        );
     }
 
     @Override

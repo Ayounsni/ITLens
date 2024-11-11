@@ -3,6 +3,7 @@ package com.it.itlens.controllers;
 import com.it.itlens.models.dtos.Answer.CreateAnswerDTO;
 import com.it.itlens.models.dtos.Answer.ResponseAnswerDTO;
 import com.it.itlens.models.dtos.Answer.UpdateAnswerDTO;
+import com.it.itlens.models.dtos.Pagination.PageDTO;
 import com.it.itlens.models.dtos.Question.CreateQuestionDTO;
 import com.it.itlens.models.dtos.Question.ResponseQuestionDTO;
 import com.it.itlens.models.dtos.Question.UpdateQuestionDTO;
@@ -39,8 +40,11 @@ public class AnswerController {
             return new ResponseEntity<>(answer, HttpStatus.OK);
     }
     @GetMapping
-    public ResponseEntity<List<ResponseAnswerDTO>> getAllAnswers() {
-        List<ResponseAnswerDTO> answers = answerService.findAll();
+    public ResponseEntity<PageDTO<ResponseAnswerDTO>> getAllAnswersPaginated(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "3") int size
+    ) {
+        PageDTO<ResponseAnswerDTO> answers = answerService.findAll(page, size);
         return new ResponseEntity<>(answers, HttpStatus.OK);
     }
     @DeleteMapping("/{id}")

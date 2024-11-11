@@ -34,6 +34,10 @@ public class Question {
     @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private List<Answer> answers;
 
+    public void incrementAnswerCount() {
+        this.answerCount++;
+    }
+
 }
 
 

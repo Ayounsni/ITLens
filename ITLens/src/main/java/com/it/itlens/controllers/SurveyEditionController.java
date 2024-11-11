@@ -1,5 +1,6 @@
 package com.it.itlens.controllers;
 
+import com.it.itlens.models.dtos.Pagination.PageDTO;
 import com.it.itlens.models.dtos.Survey.CreateSurveyDTO;
 import com.it.itlens.models.dtos.Survey.ResponseSurveyDTO;
 import com.it.itlens.models.dtos.Survey.UpdateSurveyDTO;
@@ -39,10 +40,14 @@ public class SurveyEditionController {
             return new ResponseEntity<>(surveyEdition, HttpStatus.OK);
     }
     @GetMapping
-    public ResponseEntity<List<ResponseSurveyEditionDTO>> getAllSurveyEditions() {
-        List<ResponseSurveyEditionDTO> surveyEditions = surveyEditionService.findAll();
+    public ResponseEntity<PageDTO<ResponseSurveyEditionDTO>> getAllSurveyEditionsPaginated(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "3") int size
+    ) {
+        PageDTO<ResponseSurveyEditionDTO> surveyEditions = surveyEditionService.findAll(page, size);
         return new ResponseEntity<>(surveyEditions, HttpStatus.OK);
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteSurvey(@Exists(entity = SurveyEdition.class , message = "Cet surveyEdition n'existe pas.") @PathVariable("id") Long id) {
             surveyEditionService.deleteById(id);

@@ -1,5 +1,6 @@
 package com.it.itlens.controllers;
 
+import com.it.itlens.models.dtos.Pagination.PageDTO;
 import com.it.itlens.models.dtos.Subject.CreateSubjectDTO;
 import com.it.itlens.models.dtos.Subject.ResponseSubjectDTO;
 import com.it.itlens.models.dtos.Subject.UpdateSubjectDTO;
@@ -39,10 +40,14 @@ public class SubjectController {
             return new ResponseEntity<>(subject, HttpStatus.OK);
     }
     @GetMapping
-    public ResponseEntity<List<ResponseSubjectDTO>> getAllSubjects() {
-        List<ResponseSubjectDTO> subjects = subjectService.findAll();
+    public ResponseEntity<PageDTO<ResponseSubjectDTO>> getAllSubjectsPaginated(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "3") int size
+    ) {
+        PageDTO<ResponseSubjectDTO> subjects = subjectService.findAll(page, size);
         return new ResponseEntity<>(subjects, HttpStatus.OK);
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteSubject(@Exists(entity = Subject.class , message = "Cet subject n'existe pas.") @PathVariable("id") Long id) {
             subjectService.deleteById(id);

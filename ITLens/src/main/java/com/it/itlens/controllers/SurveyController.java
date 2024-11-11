@@ -3,6 +3,7 @@ package com.it.itlens.controllers;
 import com.it.itlens.models.dtos.Owner.CreateOwnerDTO;
 import com.it.itlens.models.dtos.Owner.ResponseOwnerDTO;
 import com.it.itlens.models.dtos.Owner.UpdateOwnerDTO;
+import com.it.itlens.models.dtos.Pagination.PageDTO;
 import com.it.itlens.models.dtos.Survey.CreateSurveyDTO;
 import com.it.itlens.models.dtos.Survey.ResponseSurveyDTO;
 import com.it.itlens.models.dtos.Survey.UpdateSurveyDTO;
@@ -39,10 +40,14 @@ public class SurveyController {
             return new ResponseEntity<>(survey, HttpStatus.OK);
     }
     @GetMapping
-    public ResponseEntity<List<ResponseSurveyDTO>> getAllSurveys() {
-        List<ResponseSurveyDTO> surveys = surveyService.findAll();
+    public ResponseEntity<PageDTO<ResponseSurveyDTO>> getAllSurveysPaginated(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "3") int size
+    ) {
+        PageDTO<ResponseSurveyDTO> surveys = surveyService.findAll(page, size);
         return new ResponseEntity<>(surveys, HttpStatus.OK);
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteSurvey(@Exists(entity = Survey.class , message = "Cet survey n'existe pas.") @PathVariable("id") Long id) {
             surveyService.deleteById(id);

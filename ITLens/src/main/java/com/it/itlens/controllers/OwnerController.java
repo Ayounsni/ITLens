@@ -3,6 +3,7 @@ package com.it.itlens.controllers;
 import com.it.itlens.models.dtos.Owner.CreateOwnerDTO;
 import com.it.itlens.models.dtos.Owner.ResponseOwnerDTO;
 import com.it.itlens.models.dtos.Owner.UpdateOwnerDTO;
+import com.it.itlens.models.dtos.Pagination.PageDTO;
 import com.it.itlens.models.entities.Owner;
 import com.it.itlens.services.implementation.OwnerService;
 import com.it.itlens.validation.annotations.Exists;
@@ -34,8 +35,11 @@ public class OwnerController {
             return new ResponseEntity<>(owner, HttpStatus.OK);
     }
     @GetMapping
-    public ResponseEntity<List<ResponseOwnerDTO>> getAllOwners() {
-        List<ResponseOwnerDTO> owners = ownerService.findAll();
+    public ResponseEntity<PageDTO<ResponseOwnerDTO>> getAllOwnersPaginated(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "3") int size
+    ) {
+        PageDTO<ResponseOwnerDTO> owners = ownerService.findAll(page, size);
         return new ResponseEntity<>(owners, HttpStatus.OK);
     }
     @DeleteMapping("/{id}")
