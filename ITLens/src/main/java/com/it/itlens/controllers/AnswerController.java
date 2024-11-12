@@ -12,6 +12,7 @@ import com.it.itlens.models.entities.Question;
 import com.it.itlens.services.implementation.AnswerService;
 import com.it.itlens.services.implementation.QuestionService;
 import com.it.itlens.validation.annotations.Exists;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
