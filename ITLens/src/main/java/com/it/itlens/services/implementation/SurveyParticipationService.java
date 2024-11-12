@@ -10,14 +10,14 @@ import com.it.itlens.models.entities.Question;
 import com.it.itlens.models.enums.QuestionType;
 import com.it.itlens.repository.AnswerRepository;
 import com.it.itlens.repository.QuestionRepository;
+import com.it.itlens.services.interfaces.ISurveyParticipationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 
 @Service
-public class SurveyParticipationService {
+public class SurveyParticipationService implements ISurveyParticipationService {
 
     @Autowired
     private QuestionRepository questionRepository;
@@ -25,11 +25,16 @@ public class SurveyParticipationService {
     @Autowired
     private AnswerRepository answerRepository;
 
+    @Override
     @Transactional
     public void saveParticipation(Long surveyId, ParticipationDTO participationDTO) {
         for (ResponseDTO responseDTO : participationDTO.getResponses()) {
             Question question = questionRepository.findById(responseDTO.getQuestionId())
                     .orElseThrow(() -> new IllegalArgumentException("Question not found"));
+
+            if (question.getSubject() == null) {
+                throw new IllegalArgumentException("La question ID = " + question.getId() + " n'a pas de sujet associé.");
+            }
 
             if (!question.getSubject().getSurveyEdition().getSurvey().getId().equals(surveyId)) {
                 throw new IllegalArgumentException("La question " + responseDTO.getQuestionId() + " n'appartient pas au sondage " + surveyId);
@@ -44,7 +49,7 @@ public class SurveyParticipationService {
                         .orElseThrow(() -> new IllegalArgumentException("Answer not found"));
 
                 if (!answer.getQuestion().getId().equals(question.getId())) {
-                    throw new IllegalArgumentException("La réponse " + responseDTO.getSingleAnswerId() + " n'appartient pas à la question " + question.getId());
+                    throw new IllegalArgumentException("La réponse ID = " + responseDTO.getSingleAnswerId() + " n'appartient pas à la question ID = " + question.getId());
                 }
 
                 answer.incrementSelectionCount();
@@ -63,7 +68,7 @@ public class SurveyParticipationService {
                             .orElseThrow(() -> new IllegalArgumentException("Answer not found"));
 
                     if (!answer.getQuestion().getId().equals(question.getId())) {
-                        throw new IllegalArgumentException("La réponse " + answerDTO.getAnswerId() + " n'appartient pas à la question " + question.getId());
+                        throw new IllegalArgumentException("La réponse ID = " + answerDTO.getAnswerId() + " n'appartient pas à la question ID = " + question.getId());
                     }
 
                     answer.incrementSelectionCount();

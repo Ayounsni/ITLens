@@ -22,6 +22,9 @@ public class GenericService<Entity, CreateDTO, UpdateDTO, ResponseDTO> implement
 
     @Override
     public ResponseDTO create(CreateDTO createDTO) {
+        if (createDTO == null) {
+            throw new NullPointerException("The DTO cannot be null");
+        }
         Entity entity = mapper.toEntity(createDTO);
         Entity savedEntity = repository.save(entity);
         return mapper.toDTO(savedEntity);
@@ -60,6 +63,9 @@ public class GenericService<Entity, CreateDTO, UpdateDTO, ResponseDTO> implement
 
     @Override
     public ResponseDTO update(Long id, UpdateDTO updateDTO) {
+        if (updateDTO == null) {
+            throw new NullPointerException("The DTO cannot be null");
+        }
         Entity entity = repository.findById(id).orElseThrow();
         Entity updatedEntity = mapper.updateEntityFromDTO(updateDTO, entity);
         updatedEntity = repository.save(updatedEntity);
